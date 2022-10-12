@@ -55,8 +55,8 @@ while True:
     t.start()
     # --
 
-# close client sockets
-for cs in client_sockets:
-    cs.close()
-# close server socket
-s.close()
+    # close client sockets
+    for cs in client_sockets:
+        cs.close()
+    # close server socket
+    s.close()
