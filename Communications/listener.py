@@ -9,8 +9,8 @@ class Sender:
     pass
 """
 
-HOST = "127.0.0.1"
-PORT = 65432
+HOST = "127.0.0.1"  # Make sure IP i correct
+PORT = 5050
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
@@ -23,4 +23,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             data = conn.recv(1024)
             if not data:
                 break
+            print(f"{data}")
             conn.sendall(data)
