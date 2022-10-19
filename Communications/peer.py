@@ -1,28 +1,42 @@
 import socket
 from threading import Thread
 
-HOST = "127.0.0.1"  # Make sure IP i correct
-LISTENER_PORT = 9090
-TALKING_PORT = 5050
+RECEIVING_CLIENT = "192.168.1.188"  # Make sure IP is correct
+LISTENER_PORT = 5050
+TALKING_PORT = 9090
 
-def listen():
+
+def listener():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((HOST, LISTENER_PORT))
+        s.bind((RECEIVING_CLIENT, LISTENER_PORT))
         s.listen()
         # conn - socket object representing the connection; addr - tuple holding address of client
         conn, addr = s.accept()
+        print(f"Connected by {addr}")
         with conn:
-            print(f"Connected by {addr}")
             while True:
                 data = conn.recv(1024)
-                if not data:
-                    break
-                print(f"{data}")
+                data = data.decode("utf-8")
+                if data == "QUIT":
+                    return None
+                elif data:
+                    return f"[MESSAGE RECEIVED] - {data}"
+
+
+def always_listen():
+    """    online = True
+        while online:
+            received_message = listener()
+            if received_message:
+                print(received_message)
+            else:
+                print("[END OF CHAT] Receiving client has disconnected")
+                online = False"""
 
 
 def send(message):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, TALKING_PORT))
+        s.connect((RECEIVING_CLIENT, TALKING_PORT))
         s.sendall(message.encode(encoding="UTF-8"))
         data = s.recv(1024)
 
@@ -30,15 +44,16 @@ def send(message):
 
 
 if __name__ == "__main__":
-    listenerThread = Thread(target=listen, args=())
+    listenerThread = Thread(target=listener, args=())
     listenerThread.start()
 
-    user0 = Thread(target=send, args=("Hello0", ))
-    user1 = Thread(target=send, args=("Hello1", ))
-
-    user0.start()
-
-
-
-
+    run = True
+    while run:
+        message = input("Enter your message: ")
+        try:
+            send(message)
+        except ConnectionRefusedError:
+            print("[Error] Message not received")
+        if message == "QUIT":
+            run = False
 
