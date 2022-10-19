@@ -2,8 +2,8 @@ import socket
 from threading import Thread
 
 HOST = "127.0.0.1"
-PORT_LISTEN = 5050
-PORT_SEND = 9090
+PORT_LISTEN = 9090
+PORT_SEND = 5050
 
 
 def listen():
@@ -45,3 +45,4 @@ if __name__ == "__main__":
             break
 
     print("[END] You left the chat")
+
