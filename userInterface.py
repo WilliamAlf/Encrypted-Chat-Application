@@ -21,8 +21,6 @@ class Window:
                               text="Send",
                               command=lambda: self.take_input())
 
-        self.INPUT = ""
-
     def take_input(self):
         self.INPUT = self.inputtxt.get("1.0", "end-1c")
         self.Output.configure(state=NORMAL)
