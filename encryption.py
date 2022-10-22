@@ -14,7 +14,7 @@ class Encryption:
 
     def encryption(self, MESSAGE):
         MESSAGE = MESSAGE.encode('utf-8')
-        single_key = rsa.encrypt(MESSAGE, self.privkey) # TODO: rsa.encrypt fungerar ej med privkey
+        single_key = rsa.encrypt(MESSAGE, self.privkey)  # TODO: rsa.encrypt fungerar ej med privkey
         double_key = rsa.encrypt(single_key, self.recieved_pubkey)
         return double_key
 

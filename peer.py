@@ -2,12 +2,12 @@ from communcations import Listener, Sender
 
 
 class Peer:
-    responder_ip = "localhost"
+    receiver_ip = ""
     port = 5024
 
-    def __init__(self, send_port, listen_port):
-        self.sender = Sender(self.responder_ip, send_port, self)
-        self.listener = Listener(listen_port, self)
+    def __init__(self):
+        self.sender = Sender(self.receiver_ip, self.port, self)
+        self.listener = Listener(self.port, self)
 
     def connect_to_chat(self):
         self.sender.start_connection_thread()
@@ -25,7 +25,6 @@ class Peer:
             print("[SEND ERROR] Failed to send message", e)
 
     def leave_chat(self):
-        print("[END] You left the chat")
         self.listener.close_socket()
         self.sender.close_socket()
 

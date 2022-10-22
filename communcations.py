@@ -7,20 +7,20 @@ class Listener:
     listener_thread = None
     has_connection = False
     client = None
-    addr = None
+    address = None
 
     def __init__(self, port, peer):
         self.peer = peer
-        self.socket.bind(("localhost", port))
+        self.socket.bind(("", port))
         self.socket.listen()
 
     def wait_for_client_to_connect(self):
         if not self.has_connection:
             print("[CONNECTING_L] Waiting for client to connect")
 
-            self.client, self.addr = self.socket.accept()  # Blocker
+            self.client, self.address = self.socket.accept()  # Blocker
 
-            print(f"[CONNECTED_L] Client {self.addr} has connected")
+            print(f"[CONNECTED_L] Client {self.address} has connected")
             self.connection_found()
 
     def connection_found(self):
@@ -44,7 +44,7 @@ class Listener:
                 self.peer.leave_chat()
                 break
             elif received_message:
-                print(f"\n[MESSAGE RECEIVED] - {received_message}\nEnter your message: ")
+                print(f"[MESSAGE RECEIVED] - {received_message}")
             elif not received_message:
                 print("[END] Client has disconnected")
                 self.peer.leave_chat()
@@ -75,18 +75,22 @@ class Sender:
                 print("[CONNECTING_S] Connecting to client")
                 self.socket.connect((self.receiver_ip, self.port))
 
-            except (TimeoutError, ConnectionRefusedError) as e:
+            except (TimeoutError, ConnectionRefusedError):
                 print("[CONNECTING_S] Client is offline, standing by")
 
             else:
                 print(f"[CONNECTED_S] You have connected to {self.receiver_ip}")
-                return connection_success
+                self.has_connection = connection_success
 
             finally:
-                return connection_fail
+                self.has_connection = connection_fail
 
     def send_message(self, message):
-        self.socket.sendall(message.encode("utf-8"))
+        if message == "quit":
+            print("[END] You left the chat")
+            self.peer.leave_chat()
+        else:
+            self.socket.sendall(message.encode("utf-8"))
 
     def close_socket(self):
         self.socket.close()
