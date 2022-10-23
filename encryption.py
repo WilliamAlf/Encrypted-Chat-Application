@@ -5,18 +5,17 @@ class Encryption:
 
     def __init__(self):
         self.pubkey, self.privkey = rsa.newkeys(512)
+        self.received_pubkey = None
 
-    def recive_pubkey(self, pub_key):
-        self.recieved_pubkey = pub_key
+    def construct_received_pubkey(self, indata):
+        n, e = tuple(indata.split(' '))
 
-    def send_pubkey(self):
-        return self.pubkey
+        self.received_pubkey = rsa.PublicKey(int(n), int(e))
 
     def encryption(self, MESSAGE):
         MESSAGE = MESSAGE.encode('utf-8')
-        single_key = rsa.encrypt(MESSAGE, self.privkey)  # TODO: rsa.encrypt fungerar ej med privkey
-        double_key = rsa.encrypt(single_key, self.recieved_pubkey)
-        return double_key
+        single_key = rsa.encrypt(MESSAGE, self.received_pubkey)
+        return single_key
 
     def decryption(self, MESSAGE):
         print(MESSAGE.decrypt(MESSAGE, self.privkey))

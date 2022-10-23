@@ -28,12 +28,14 @@ class Listener:
 
         if not self.peer.sender.has_connection:
             self.peer.sender.connect_to_client()
-
-        self.start_listener()
+        # Moved start_listener method call to main file to allow encryption key send/receive
 
     def start_listener(self):
         self.listener_thread = Thread(target=self.listen_for_message)
         self.listener_thread.start()
+
+    def listen_for_public_key(self):
+        return self.client.recv(1024).decode("utf-8")
 
     def listen_for_message(self):
         while True:
@@ -45,6 +47,7 @@ class Listener:
                 break
             elif received_message:
                 print(f"[MESSAGE RECEIVED] - {received_message}")
+
             elif not received_message:
                 print("[END] Client has disconnected")
                 self.peer.leave_chat()
@@ -75,7 +78,7 @@ class Sender:
                 print("[CONNECTING_S] Connecting to client")
                 self.socket.connect((self.receiver_ip, self.port))
 
-            except (TimeoutError, ConnectionRefusedError):
+            except (TimeoutError, ConnectionRefusedError, OSError):
                 print("[CONNECTING_S] Client is offline, standing by")
 
             else:
