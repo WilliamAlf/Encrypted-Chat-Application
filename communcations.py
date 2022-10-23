@@ -13,6 +13,8 @@ class Listener:
         self.peer = peer
         self.socket.bind(("", port))
         self.socket.listen()
+        self.saved_message = None
+
 
     def wait_for_client_to_connect(self):
         if not self.has_connection:
@@ -39,7 +41,7 @@ class Listener:
 
     def listen_for_message(self):
         while True:
-            received_message = self.client.recv(1024).decode("utf-8")
+            received_message = self.client.recv(1024)
 
             if received_message == "quit":
                 print("[END] Client left the chat")
@@ -47,11 +49,15 @@ class Listener:
                 break
             elif received_message:
                 print(f"[MESSAGE RECEIVED] - {received_message}")
+                self.saved_message = received_message
 
             elif not received_message:
                 print("[END] Client has disconnected")
                 self.peer.leave_chat()
                 break
+
+    def reset_saved_message(self):
+        self.saved_message = None
 
     def close_socket(self):
         self.socket.close()
@@ -89,11 +95,7 @@ class Sender:
                 self.has_connection = connection_fail
 
     def send_message(self, message):
-        if message == "quit":
-            print("[END] You left the chat")
-            self.peer.leave_chat()
-        else:
-            self.socket.sendall(message.encode("utf-8"))
+        self.socket.sendall(message)
 
     def close_socket(self):
         self.socket.close()

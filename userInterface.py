@@ -35,6 +35,11 @@ class Window:
         self.Output.configure(state=DISABLED)
         self.inputtxt.delete('1.0', END)
 
+    def receive_message(self, message):
+        self.Output.configure(state=NORMAL)
+        self.Output.insert(END, "Them: " + message + '\n')
+        self.Output.configure(state=DISABLED)
+
     def run(self):
         self.inputtxt.pack()
         self.Display.pack()

@@ -12,10 +12,9 @@ class Encryption:
 
         self.received_pubkey = rsa.PublicKey(int(n), int(e))
 
-    def encryption(self, MESSAGE):
-        MESSAGE = MESSAGE.encode('utf-8')
-        single_key = rsa.encrypt(MESSAGE, self.received_pubkey)
-        return single_key
+    def encryption(self,  message):
+        message = message.encode("utf-8")
+        return rsa.encrypt(message, self.received_pubkey)
 
-    def decryption(self, MESSAGE):
-        print(MESSAGE.decrypt(MESSAGE, self.privkey))
+    def decryption(self, message):
+        return rsa.decrypt(message, self.privkey).decode("utf-8")

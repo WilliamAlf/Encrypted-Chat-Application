@@ -9,7 +9,7 @@ def start_chat(window):
 
     enc = Encryption()
 
-    peer.sender.send_message(f"{enc.pubkey.n} {enc.pubkey.e}")
+    peer.sender.send_message(f"{enc.pubkey.n} {enc.pubkey.e}".encode("utf-8"))
     enc.construct_received_pubkey(peer.listener.listen_for_public_key())
 
     # Start listener after encryption-key trade to avoid "racing the beam"
@@ -20,8 +20,7 @@ def start_chat(window):
     while True:
         message = window.get_input()
 
-        # TODO: Check for received message and apply it to userInterface
-
+        # Check for outgoing message and encrypt
         if message:
             if message == "quit":
                 print("[END] You left the chat")
@@ -29,8 +28,13 @@ def start_chat(window):
                 break
 
             else:
-                peer.send_message(message)
+                peer.send_message(enc.encryption(message))
                 window.reset_input()
+
+        # Check for incoming message and decrypt
+        if peer.listener.saved_message:
+            window.receive_message(enc.decryption(peer.listener.saved_message))
+            peer.listener.reset_saved_message()
 
         window.root.update_idletasks()
         window.root.update()
