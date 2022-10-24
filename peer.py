@@ -3,7 +3,7 @@ from communcations import Listener, Sender
 
 class Peer:
     receiver_ip = ""
-    port = 5024
+    port = 5025
 
     def __init__(self):
         self.sender = Sender(self.receiver_ip, self.port, self)
@@ -27,4 +27,10 @@ class Peer:
     def leave_chat(self):
         self.listener.close_socket()
         self.sender.close_socket()
+
+    def listen_for_public_key(self):
+        return self.listener.listen_for_public_key()
+
+    def start_listener(self):
+        self.listener.start_listener()
 

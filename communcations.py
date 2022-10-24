@@ -15,7 +15,6 @@ class Listener:
         self.socket.listen()
         self.saved_message = None
 
-
     def wait_for_client_to_connect(self):
         if not self.has_connection:
             print("[CONNECTING_L] Waiting for client to connect")

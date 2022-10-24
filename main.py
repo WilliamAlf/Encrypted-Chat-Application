@@ -3,17 +3,17 @@ from peer import Peer
 from encryption import Encryption
 
 
-def start_chat(window):
+def start_chat():
     # Startup and trading of encryption keys
     peer.connect_to_chat()
 
     enc = Encryption()
 
-    peer.sender.send_message(f"{enc.pubkey.n} {enc.pubkey.e}".encode("utf-8"))
-    enc.construct_received_pubkey(peer.listener.listen_for_public_key())
+    peer.send_message(f"{enc.pubkey.n} {enc.pubkey.e}".encode("utf-8"))
+    enc.construct_received_pubkey(peer.listen_for_public_key())
 
     # Start listener after encryption-key trade to avoid "racing the beam"
-    peer.listener.start_listener()
+    peer.start_listener()
 
     # Window run and mainloop
     window.run()
@@ -44,4 +44,4 @@ if __name__ == "__main__":
     window = Window()
     peer = Peer()
 
-    start_chat(window)
+    start_chat()
