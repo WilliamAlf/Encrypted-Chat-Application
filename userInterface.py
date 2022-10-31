@@ -18,9 +18,12 @@ class InputWindow:
 
         self.EXIT = False
 
+        self.port = ""
+        self.ipadress = ""
+
     def validate(self):
         self.EXIT = True
-        return self.portEntry.get(), self.ipEntry.get()
+        self.port, self.ipadress = self.portEntry.get(), self.ipEntry.get()
 
     def run(self):
         self.portLabel.pack()

@@ -5,8 +5,6 @@ from encryption import Encryption
 
 def start_chat():
     # Startup and trading of encryption keys
-    window = Window()
-    peer = Peer()
     peer.connect_to_chat()
 
     enc = Encryption()
@@ -50,3 +48,9 @@ def start_chat():
 if __name__ == "__main__":
     inputWindow = InputWindow()
     inputWindow.run()
+
+    if inputWindow.EXIT:
+        peer = Peer(int(inputWindow.port), inputWindow.ipadress)
+
+        window = Window()
+        start_chat()

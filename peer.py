@@ -2,10 +2,10 @@ from communcations import Listener, Sender
 
 
 class Peer:
-    receiver_ip = ""
-    port = 5025
 
-    def __init__(self):
+    def __init__(self, port, receiver_ip):
+        self.port = port
+        self.receiver_ip = receiver_ip
         self.sender = Sender(self.receiver_ip, self.port, self)
         self.listener = Listener(self.port, self)
 
