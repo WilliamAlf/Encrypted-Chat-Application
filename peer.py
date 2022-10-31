@@ -34,3 +34,5 @@ class Peer:
     def start_listener(self):
         self.listener.start_listener()
 
+    def reset_saved_message(self):
+        self.listener.reset_saved_message()

@@ -34,10 +34,16 @@ def start_chat():
         # Check for incoming message and decrypt
         if peer.listener.saved_message:
             window.receive_message(enc.decryption(peer.listener.saved_message))
-            peer.listener.reset_saved_message()
+            peer.reset_saved_message()
+
+        if window.EXIT:
+            break
 
         window.root.update_idletasks()
         window.root.update()
+
+    # Post mainloop, end threads etc.
+
 
 
 if __name__ == "__main__":

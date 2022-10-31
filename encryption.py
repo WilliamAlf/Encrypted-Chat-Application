@@ -17,4 +17,5 @@ class Encryption:
         return rsa.encrypt(message, self.received_pubkey)
 
     def decryption(self, message):
-        return rsa.decrypt(message, self.privkey).decode("utf-8")
+        message = rsa.decrypt(message, self.privkey)
+        return message.decode("utf-8")

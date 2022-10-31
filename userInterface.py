@@ -7,6 +7,7 @@ class Window:
         self.root = Tk()
         self.root.geometry("300x300")
         self.root.title("Encrypted Chat")
+        self.root.protocol("WN_DELETE_WINDOW", self.exit_window)
 
         self.inputtxt = Text(self.root, height=5,
                              width=25,
@@ -20,7 +21,10 @@ class Window:
                               width=20,
                               text="Send",
                               command=lambda: self.take_input())
+
         self.INPUT = None
+
+        self.EXIT = False
 
     def reset_input(self):
         self.INPUT = None
@@ -39,6 +43,9 @@ class Window:
         self.Output.configure(state=NORMAL)
         self.Output.insert(END, "Them: " + message + '\n')
         self.Output.configure(state=DISABLED)
+
+    def exit_window(self):
+        self.EXIT = True
 
     def run(self):
         self.inputtxt.pack()
