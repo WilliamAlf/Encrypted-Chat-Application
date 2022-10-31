@@ -1,10 +1,12 @@
-from userInterface import Window
+from userInterface import Window, InputWindow
 from peer import Peer
 from encryption import Encryption
 
 
 def start_chat():
     # Startup and trading of encryption keys
+    window = Window()
+    peer = Peer()
     peer.connect_to_chat()
 
     enc = Encryption()
@@ -45,9 +47,6 @@ def start_chat():
     # Post mainloop, end threads etc.
 
 
-
 if __name__ == "__main__":
-    window = Window()
-    peer = Peer()
-
-    start_chat()
+    inputWindow = InputWindow()
+    inputWindow.run()

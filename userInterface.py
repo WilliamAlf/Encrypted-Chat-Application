@@ -1,6 +1,40 @@
 from tkinter import *
 
 
+class InputWindow:
+
+    def __init__(self):
+        self.root = Tk()
+        self.root.geometry("300x150")
+        self.root.title("Encrypted Chat")
+
+        self.portLabel = Label(self.root, text="Port")
+        self.portEntry = Entry(self.root)
+
+        self.ipLabel = Label(self.root, text="IP Adress")
+        self.ipEntry = Entry(self.root)
+
+        self.button = Button(self.root, command=lambda: self.validate(), text="Connect")
+
+        self.EXIT = False
+
+    def validate(self):
+        self.EXIT = True
+        return self.portEntry.get(), self.ipEntry.get()
+
+    def run(self):
+        self.portLabel.pack()
+        self.portEntry.pack()
+        self.ipLabel.pack()
+        self.ipEntry.pack()
+
+        self.button.pack()
+
+        while not self.EXIT:
+            self.root.update_idletasks()
+            self.root.update()
+
+
 class Window:
 
     def __init__(self):
