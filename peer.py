@@ -27,6 +27,7 @@ class Peer:
     def leave_chat(self):
         self.listener.close_socket()
         self.sender.close_socket()
+        self.listener.EXIT = True
 
     def listen_for_public_key(self):
         return self.listener.listen_for_public_key()

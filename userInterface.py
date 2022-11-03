@@ -22,8 +22,9 @@ class InputWindow:
         self.ipadress = ""
 
     def validate(self):
-        self.EXIT = True
         self.port, self.ipadress = self.portEntry.get(), self.ipEntry.get()
+        self.root.destroy()
+        self.EXIT = True
 
     def run(self):
         self.portLabel.pack()
@@ -44,7 +45,7 @@ class Window:
         self.root = Tk()
         self.root.geometry("300x300")
         self.root.title("Encrypted Chat")
-        self.root.protocol("WN_DELETE_WINDOW", self.exit_window)
+        self.root.wm_protocol("WM_DELETE_WINDOW", self.exit_window)
 
         self.inputtxt = Text(self.root, height=5,
                              width=25,
@@ -82,6 +83,7 @@ class Window:
         self.Output.configure(state=DISABLED)
 
     def exit_window(self):
+        self.root.destroy()
         self.EXIT = True
 
     def run(self):

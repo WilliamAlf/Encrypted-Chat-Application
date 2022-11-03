@@ -24,7 +24,6 @@ def start_chat():
         if message:
             if message == "quit":
                 print("[END] You left the chat")
-                peer.leave_chat()
                 break
 
             else:
@@ -37,12 +36,14 @@ def start_chat():
             peer.reset_saved_message()
 
         if window.EXIT:
+            print("[END] You left the chat")
             break
 
         window.root.update_idletasks()
         window.root.update()
 
     # Post mainloop, end threads etc.
+    peer.leave_chat()
 
 
 if __name__ == "__main__":

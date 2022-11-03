@@ -15,6 +15,8 @@ class Listener:
         self.socket.listen()
         self.saved_message = None
 
+        self.EXIT = False
+
     def wait_for_client_to_connect(self):
         if not self.has_connection:
             print("[CONNECTING_L] Waiting for client to connect")
@@ -39,14 +41,10 @@ class Listener:
         return self.client.recv(1024).decode("utf-8")
 
     def listen_for_message(self):
-        while True:
+        while not self.EXIT:
             received_message = self.client.recv(1024)
 
-            if received_message == "quit":
-                print("[END] Client left the chat")
-                self.peer.leave_chat()
-                break
-            elif received_message:
+            if received_message:
                 print(f"[MESSAGE RECEIVED] - {received_message}")
                 self.saved_message = received_message
 
